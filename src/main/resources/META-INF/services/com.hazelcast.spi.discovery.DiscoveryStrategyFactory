@@ -1,1 +1,1 @@
-in.bitanxen.poc.SpringCloudDiscoveryStrategyFactory
+com.sysbean.hazelcast.EurekaDiscoveryStrategyFactory
