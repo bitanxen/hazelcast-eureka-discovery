@@ -7,7 +7,7 @@
     <groupId>com.sysbean</groupId>
     <artifactId>hazelcast-eureka-discovery</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.4</version>
+    <version>1.0.1</version>
 
     <name>hazelcast-eureka-discovery</name>
     <description>Hazelcast Service Discovery using Eureka Client</description>

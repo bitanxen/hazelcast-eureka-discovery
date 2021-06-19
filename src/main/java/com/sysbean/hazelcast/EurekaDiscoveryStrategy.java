@@ -44,18 +44,18 @@ import java.util.concurrent.TimeUnit;
 
 import static com.sysbean.hazelcast.config.EurekaProperties.*;
 
-final class EurekaOneDiscoveryStrategy extends AbstractDiscoveryStrategy {
+final class EurekaDiscoveryStrategy extends AbstractDiscoveryStrategy {
 
-    static final class EurekaOneDiscoveryStrategyBuilder {
+    static final class EurekaDiscoveryStrategyBuilder {
         private EurekaClient eurekaClient;
         private String groupName = Config.DEFAULT_CLUSTER_NAME;
         private ApplicationInfoManager applicationInfoManager;
         private DiscoveryNode discoveryNode;
-        private ILogger logger = new NoLogFactory().getLogger(EurekaOneDiscoveryStrategy.class.getName());
+        private ILogger logger = new NoLogFactory().getLogger(EurekaDiscoveryStrategy.class.getName());
         private Map<String, Comparable> properties = Collections.emptyMap();
         private StatusChangeStrategy changeStrategy;
 
-        EurekaOneDiscoveryStrategyBuilder setEurekaClient(final EurekaClient eurekaClient) {
+        EurekaDiscoveryStrategyBuilder setEurekaClient(final EurekaClient eurekaClient) {
             this.eurekaClient = eurekaClient;
             if (eurekaClient != null) {
                 this.applicationInfoManager = eurekaClient.getApplicationInfoManager();
@@ -63,39 +63,39 @@ final class EurekaOneDiscoveryStrategy extends AbstractDiscoveryStrategy {
             return this;
         }
 
-        EurekaOneDiscoveryStrategyBuilder setGroupName(final String groupName) {
+        EurekaDiscoveryStrategyBuilder setGroupName(final String groupName) {
             this.groupName = groupName;
             return this;
         }
 
-        EurekaOneDiscoveryStrategyBuilder setApplicationInfoManager(
+        EurekaDiscoveryStrategyBuilder setApplicationInfoManager(
                 final ApplicationInfoManager applicationInfoManager) {
             this.applicationInfoManager = applicationInfoManager;
             return this;
         }
 
-        EurekaOneDiscoveryStrategyBuilder setDiscoveryNode(final DiscoveryNode discoveryNode) {
+        EurekaDiscoveryStrategyBuilder setDiscoveryNode(final DiscoveryNode discoveryNode) {
             this.discoveryNode = discoveryNode;
             return this;
         }
 
-        EurekaOneDiscoveryStrategyBuilder setILogger(final ILogger logger) {
+        EurekaDiscoveryStrategyBuilder setILogger(final ILogger logger) {
             this.logger = logger;
             return this;
         }
 
-        EurekaOneDiscoveryStrategyBuilder setProperties(final Map<String, Comparable> properties) {
+        EurekaDiscoveryStrategyBuilder setProperties(final Map<String, Comparable> properties) {
             this.properties = properties;
             return this;
         }
 
         @VisibleForTesting
-        EurekaOneDiscoveryStrategyBuilder setStatusChangeStrategy(StatusChangeStrategy statusChangeStrategy) {
+        EurekaDiscoveryStrategyBuilder setStatusChangeStrategy(StatusChangeStrategy statusChangeStrategy) {
             this.changeStrategy = statusChangeStrategy;
             return this;
         }
 
-        EurekaOneDiscoveryStrategy build() {
+        EurekaDiscoveryStrategy build() {
 
             if (null == changeStrategy) {
                 changeStrategy = new DefaultUpdater();
@@ -105,7 +105,7 @@ final class EurekaOneDiscoveryStrategy extends AbstractDiscoveryStrategy {
                 changeStrategy = new NoopUpdater();
             }
 
-            return new EurekaOneDiscoveryStrategy(this);
+            return new EurekaDiscoveryStrategy(this);
         }
     }
 
@@ -126,7 +126,7 @@ final class EurekaOneDiscoveryStrategy extends AbstractDiscoveryStrategy {
     private final Boolean skipEurekaRegistrationVerification;
     private final Boolean useMetadataForHostAndPort;
 
-    private EurekaOneDiscoveryStrategy(final EurekaOneDiscoveryStrategyBuilder builder) {
+    private EurekaDiscoveryStrategy(final EurekaDiscoveryStrategyBuilder builder) {
         super(builder.logger, builder.properties);
 
         this.namespace = getOrDefault(EUREKA_ONE_SYSTEM_PREFIX, NAMESPACE, "hazelcast");
@@ -267,9 +267,6 @@ final class EurekaOneDiscoveryStrategy extends AbstractDiscoveryStrategy {
                 if (instance.getStatus() != InstanceInfo.InstanceStatus.UP) {
                     continue;
                 }
-
-                System.out.println(instance.getAppGroupName());
-                System.out.println(instance.getAppName());
 
                 if(!appGroupName.equalsIgnoreCase(instance.getAppGroupName())) {
                     continue;
